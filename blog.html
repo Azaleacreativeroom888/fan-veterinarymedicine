@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>blog ── 学習日誌 | 獣医学辞典</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;600;900&family=Shippori+Mincho:wght@400;500;600;800&family=EB+Garamond:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #efe3c4;
+    --paper-deep: #e5d5ac;
+    --paper-shadow: #d8c599;
+    --ink: #2c2013;
+    --ink-soft: #4a3c28;
+    --red: #b22222;
+    --red-deep: #7c1717;
+    --red-ink: #8f1c1c;
+    --gold: #93732f;
+    --rule: #a58f61;
+    --rule-soft: rgba(147,115,47,0.35);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(178,34,34,0.04), transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(147,115,47,0.05), transparent 55%),
+      var(--paper);
+    color: var(--ink);
+    font-family: "Shippori Mincho", serif;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  /* ---------- header / spine ---------- */
+  header.spine{
+    background: linear-gradient(180deg, var(--red) 0%, var(--red-deep) 100%);
+    color: #f2e6c9;
+    border-bottom: 6px double #6b1212;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  }
+
+  .spine-inner{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 22px 28px 18px;
+    display:flex;
+    align-items:baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+  }
+
+  .brand{
+    font-family: "Zen Old Mincho", serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: 0.14em;
+  }
+
+  .brand small{
+    display:block;
+    font-family: "EB Garamond", serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: #e8d3a8;
+    margin-top: 4px;
+  }
+
+  nav.top ul{
+    list-style:none;
+    display:flex;
+    gap: 22px;
+    margin:0; padding:0;
+    font-size: 0.92rem;
+    letter-spacing: 0.06em;
+  }
+  nav.top a{
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, opacity .2s ease;
+  }
+  nav.top a:hover{ border-color: #e8d3a8; }
+  nav.top a.current{ border-color: #e8d3a8; opacity: 1; font-weight: 600; }
+
+  /* ---------- page frame ---------- */
+  main{
+    position: relative;
+    max-width: 880px;
+    margin: 40px auto 0;
+    padding: 0 28px 10px;
+  }
+
+  .leaf{
+    position: relative;
+    background: var(--paper-deep);
+    border: 1px solid var(--rule-soft);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.5) inset,
+      0 18px 34px -22px rgba(44,32,19,0.55);
+    padding: 46px clamp(20px, 5vw, 64px) 50px;
+  }
+
+  .corner{
+    position:absolute;
+    width: 34px; height: 34px;
+    border: 2px solid var(--red);
+    opacity: 0.65;
+  }
+  .corner.tl{ top:10px; left:10px; border-right:none; border-bottom:none; }
+  .corner.tr{ top:10px; right:10px; border-left:none; border-bottom:none; }
+  .corner.bl{ bottom:10px; left:10px; border-right:none; border-top:none; }
+  .corner.br{ bottom:10px; right:10px; border-left:none; border-top:none; }
+
+  /* ---------- page heading ---------- */
+  .entry-no{
+    font-family:"EB Garamond", serif;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    font-size: 0.85rem;
+    margin: 0 0 6px;
+  }
+
+  h1.headword{
+    font-family: "Zen Old Mincho", serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5.2vw, 2.7rem);
+    color: var(--red-ink);
+    margin: 0;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+
+  .yomi{
+    font-size: 1rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    margin: 6px 0 20px;
+  }
+
+  .rule{
+    border:none;
+    border-top: 1px solid var(--rule-soft);
+    margin: 26px 0;
+  }
+  .rule.thick{
+    border-top: 3px double var(--rule);
+  }
+
+  .lede{
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+    margin: 0 0 8px;
+  }
+
+  /* ---------- diary list ---------- */
+  .diary{
+    margin-top: 40px;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .diary-entry{
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    gap: 22px;
+    padding: 26px 4px;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .diary-date{
+    font-family: "EB Garamond", serif;
+    font-style: italic;
+    color: var(--red-ink);
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+    padding-top: 2px;
+  }
+
+  .diary-date .yy{
+    display:block;
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-style: normal;
+    letter-spacing: 0.14em;
+    margin-bottom: 2px;
+  }
+
+  .diary-text{
+    color: var(--ink);
+    font-size: 0.98rem;
+  }
+
+  .diary-text p{ margin: 0; }
+
+  @media (max-width: 560px){
+    nav.top ul{ gap: 14px; font-size: 0.84rem; }
+    .leaf{ padding: 34px 18px 40px; }
+    .diary-entry{
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .diary-date{ padding-top: 0; }
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top: 60px;
+    border-top: 6px double var(--rule);
+    background: var(--paper-shadow);
+  }
+
+  .footer-inner{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 36px 28px 40px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .footer-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 6px 18px;
+    margin-bottom: 18px;
+  }
+  .footer-links a{
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .footer-links a:hover{ color: var(--red-ink); border-color: var(--red-ink); }
+
+  .footer-note{
+    line-height: 1.8;
+    max-width: 62ch;
+  }
+
+  .footer-note + .footer-note{ margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<header class="spine">
+  <div class="spine-inner">
+    <div class="brand">獣医学辞典
+      <small>Dictionarium Veterinariae &mdash; a study log</small>
+    </div>
+    <nav class="top">
+      <ul>
+        <li><a href="index.html">index</a></li>
+        <li><a href="blog.html" class="current">blog</a></li>
+        <li><a href="column.html">column</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="leaf">
+    <span class="corner tl"></span>
+    <span class="corner tr"></span>
+    <span class="corner bl"></span>
+    <span class="corner br"></span>
+
+    <p class="entry-no">No. 002</p>
+    <h1 class="headword">学習日誌</h1>
+    <p class="yomi">がくしゅう・にっし</p>
+
+    <hr class="rule">
+
+    <p class="lede">日付と一言だけの、簡素な記録帳。難しいことは書かない。その日勉強したこと、気づいたこと、つまずいたことを、ただ書き留めておくための欄。</p>
+
+    <hr class="rule thick">
+
+    <div class="diary">
+
+      <div class="diary-entry">
+        <div class="diary-date"><span class="yy">2026</span>9.13</div>
+        <div class="diary-text"><p>解剖学の教科書、前肢の骨からやり直し。橈骨と尺骨の位置関係がやっと頭に入った。</p></div>
+      </div>
+
+      <div class="diary-entry">
+        <div class="diary-date"><span class="yy">2026</span>9.10</div>
+        <div class="diary-text"><p>犬と猫の歯式の違いを表にまとめる。猫の方が臼歯少ないの、意外と忘れがち。</p></div>
+      </div>
+
+      <div class="diary-entry">
+        <div class="diary-date"><span class="yy">2026</span>9.07</div>
+        <div class="diary-text"><p>生理学、反芻動物の胃の勉強。四つの胃の名前をラテン語ごと覚える。呪文みたい。</p></div>
+      </div>
+
+      <div class="diary-entry">
+        <div class="diary-date"><span class="yy">2026</span>9.03</div>
+        <div class="diary-text"><p>今日は薬理学。用量計算の練習問題を10問。単位換算でミスって2問落とした、悔しい。</p></div>
+      </div>
+
+      <div class="diary-entry">
+        <div class="diary-date"><span class="yy">2026</span>8.29</div>
+        <div class="diary-text"><p>このサイトを作り始めた。辞典っぽいデザインにしたくて、色は深紅にした。</p></div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="index.html">index</a>
+      <a href="blog.html">blog</a>
+      <a href="column.html">column</a>
+      <a href="about.html">about</a>
+      <a href="https://formspree.io/f/maqvpvoz" target="_blank" rel="noopener">お問い合わせ</a>
+    </div>
+    <p class="footer-note">本サイトの文章・イラスト・漫画は、AIの学習データとしての使用を禁じます。No content on this site may be used for AI training purposes.</p>
+    <p class="footer-note">&copy; <span id="year"></span> Azalea Creative Room</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
